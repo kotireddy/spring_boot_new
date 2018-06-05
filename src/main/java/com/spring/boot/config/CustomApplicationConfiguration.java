@@ -18,6 +18,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.jndi.JndiObjectFactoryBean;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 @Configuration
 public class CustomApplicationConfiguration {
@@ -28,7 +29,7 @@ public class CustomApplicationConfiguration {
 	private Environment environment;
 	
 	@Bean
-	public DataSource dataSource() throws IllegalArgumentException, NamingException {
+	public DataSource dataSource() throws Exception {
 		LOGGER.info("<<<<<<< Jndi DataSource Fetching >>>>>>>");
 		if(Arrays.asList(environment.getActiveProfiles()).contains("prod")) {
 			LOGGER.info("<<<<<<< Jndi Prod DataSource Fetching >>>>>>>");
@@ -43,25 +44,14 @@ public class CustomApplicationConfiguration {
 			DataSourceProperties dataSourceProperties = dataSourceProperties();
 			return primaryDataSource(dataSourceProperties);
 		}
-		
 	}
-	
-	/*@Bean
-	public LocalSessionFactoryBean sessionFactory() throws IllegalArgumentException, NamingException {
-		LOGGER.info("<<<<<<< SessionFactory Configuration >>>>>>>");
+
+	@Bean
+	public LocalSessionFactoryBean sessionFactory() throws  Exception{
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		if(Arrays.asList(environment.getActiveProfiles()).contains("prod")) {
-			LOGGER.info("<<<<<<< Loading Production SessionFactory >>>>>>>");
-			sessionFactory.setDataSource(dataSource());
-			sessionFactory.setPackagesToScan("com.spring.boot.entity");
-		}else {
-			LOGGER.info("<<<<<<< Loading Dev (OR) Uat SessionFactory >>>>>>>");
-			sessionFactory.setDataSource(dataSource);
-			sessionFactory.setPackagesToScan("com.spring.boot.entity");
-		}
-		
+		sessionFactory.setDataSource(dataSource());
 		return sessionFactory;
-	}*/
+	}
 	
 	@Bean
 	@Primary
