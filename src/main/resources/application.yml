@@ -1,0 +1,10 @@
+## Application related configuration
+spring:
+  application:
+    name: spring_boot
+
+## Server related configuration
+server:
+  port: 8443
+  servlet:
+    context-path: /spring_boot       
