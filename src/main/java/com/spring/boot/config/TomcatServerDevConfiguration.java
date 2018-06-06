@@ -1,7 +1,6 @@
 package com.spring.boot.config;
 
 import org.apache.catalina.Context;
-import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
@@ -36,14 +35,7 @@ public class TomcatServerDevConfiguration extends TomcatServletWebServerFactory{
         securityConstraint.addCollection(collection);
         context.addConstraint(securityConstraint);
 	}
-	
 
-	
-	
-	
-	
-	
-	
 	
 	
 }
