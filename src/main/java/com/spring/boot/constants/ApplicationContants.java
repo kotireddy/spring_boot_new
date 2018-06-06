@@ -8,7 +8,7 @@ public class ApplicationContants {
 	
 	/** DATASOURCE PROPERTIES LOADING CONSTANTS **/
 	public static final String DATABASE_PROPS_CONST = "spring.datasource";
-	public static final String HIBERNATE_PROPS_CONST = "spring.jpa.properties";
+	public static final String HIBERNATE_PROPS_CONST = "hibernate";
 	public static final String HIBER_ENTITY_SCAN_PACKZAGE = "com.spring.boot.entity";
 	
 	

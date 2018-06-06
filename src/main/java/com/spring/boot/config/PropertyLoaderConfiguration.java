@@ -1,6 +1,7 @@
 package com.spring.boot.config;
 
 import com.spring.boot.constants.ApplicationContants;
+import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,11 @@ import org.springframework.core.env.Environment;
 import java.util.Properties;
 
 
-
 @Configuration
 @ConfigurationProperties(prefix = ApplicationContants.HIBERNATE_PROPS_CONST)
 public class PropertyLoaderConfiguration {
 
-	private static Logger logger = LoggerFactory.getLogger(PropertyLoaderConfiguration.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(PropertyLoaderConfiguration.class);
 	
 	@Autowired
 	private Environment environment;
@@ -33,7 +33,7 @@ public class PropertyLoaderConfiguration {
 	@Primary
 	@ConfigurationProperties(prefix = ApplicationContants.DATABASE_PROPS_CONST)
 	public DataSourceProperties dataSourceProperties() {
-		logger.info("<<< --- Loading DataSourceProperties --- >>>");
+		LOGGER.info("<<< --- Loading DataSourceProperties --- >>>");
 		return new DataSourceProperties();
 	}
 	
@@ -43,7 +43,7 @@ public class PropertyLoaderConfiguration {
 	 */
 	@Bean
 	public Properties hibernateProperties() {
-		logger.info("<<< --- Loading Properties for Hibernate --- >>>");
+		LOGGER.info("<<< --- Loading Properties for Hibernate --- >>>");
 		Properties properties = new Properties();
 		properties.put(ApplicationContants.HIBER_DIALECT_KEY, 
 				environment.getRequiredProperty(ApplicationContants.HIBER_DIALECT_KEY));
@@ -55,5 +55,7 @@ public class PropertyLoaderConfiguration {
 				environment.getRequiredProperty(ApplicationContants.HIBER_HBN2DDL_KEY));
 		return properties;
 	}
+
+
 	
 }
