@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 
-@SpringBootApplication
+
+@SpringBootApplication   //(exclude = JpaRepositoriesAutoConfiguration.class)
 public class DemoApplication implements CommandLineRunner{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DemoApplication.class);

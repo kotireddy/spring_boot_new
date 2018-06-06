@@ -16,6 +16,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import java.util.List;
 
 @Configuration
+@EnableWebMvc
 public class WebMvcConfiguration implements WebMvcConfigurer{
 
     private static final Logger LOGGER = LoggerFactory.

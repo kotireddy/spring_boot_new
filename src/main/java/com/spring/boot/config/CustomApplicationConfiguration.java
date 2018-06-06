@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.jndi.JndiObjectFactoryBean;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -59,34 +61,49 @@ public class CustomApplicationConfiguration {
 
 	}
 
+	/*@Bean
+	public LocalSessionFactoryBean sessionFactory(){
+		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+		sessionFactory.setDataSource(dataSource());
+		sessionFactory.setPackagesToScan("com.spring.boot.entity");
+		sessionFactory.setHibernateProperties(propertyLoaderConfiguration.hibernateProperties());
+		return sessionFactory;
+	}
+
+	@Bean
+	public HibernateTransactionManager transactionManager(){
+		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+		transactionManager.setSessionFactory(sessionFactory().getObject());
+		return transactionManager;
+	}
+*/
+
+
 	@Bean
 	@Primary
-	public EntityManagerFactory entityManagerFactoryBean(){
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		vendorAdapter.setGenerateDdl(true);
+	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(){
 		LocalContainerEntityManagerFactoryBean entityManagerFactory = new
 										LocalContainerEntityManagerFactoryBean();
-		entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
+		entityManagerFactory.setJpaVendorAdapter(getHibernateJpaVendorAdapter());
 		entityManagerFactory.setDataSource(dataSource());
 		entityManagerFactory.setPackagesToScan("com.spring.boot.entity");
 		entityManagerFactory.setPersistenceUnitName("default");
-		entityManagerFactory.afterPropertiesSet();
-		return entityManagerFactory.getObject();
+		entityManagerFactory.setJpaProperties(propertyLoaderConfiguration.hibernateProperties());
+		return entityManagerFactory;
 	}
 
-    @Bean
-	public SessionFactory sessionFactory(EntityManagerFactory entityManagerFactory) {
-		if (entityManagerFactory.unwrap(SessionFactory.class) == null) {
-			throw new NullPointerException("factory is not a hibernate factory");
-		}
-		return entityManagerFactory.unwrap(SessionFactory.class);
-    }
-
-    @Bean
-	public PlatformTransactionManager transactionManager(){
+	@Bean
+	public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory){
 		JpaTransactionManager txManager = new JpaTransactionManager();
-		txManager.setEntityManagerFactory(entityManagerFactoryBean());
+		txManager.setEntityManagerFactory(entityManagerFactory);
 		return txManager;
+	}
+
+	private HibernateJpaVendorAdapter getHibernateJpaVendorAdapter() {
+		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		vendorAdapter.setGenerateDdl(false);
+		vendorAdapter.setShowSql(true);
+		return vendorAdapter;
 	}
 
 	public static Connector getTomcatConnector(){
