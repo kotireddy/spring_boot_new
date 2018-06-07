@@ -37,7 +37,7 @@ public class TomcatServerProdConfiguration extends TomcatServletWebServerFactory
 		resource.setProperty("driverClassName", "com.mysql.jdbc.Driver");
 		resource.setProperty("jdbcUrl", "jdbc:mysql://localhost:3306/oxygen?useSSL=false");
 		resource.setProperty("username", "root");
-		resource.setProperty("password", "AMMAnana13$");
+		resource.setProperty("password", "password");
 		resource.setProperty("poolName", "springHikariCP");
 		resource.setProperty("connectionTestQuery", "SELECT 1");
 		resource.setProperty("cachePrepStmts", "true");

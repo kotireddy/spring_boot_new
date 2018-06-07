@@ -17,7 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class CustomSecurityConfigurer extends WebSecurityConfigurerAdapter{
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CustomSecurityConfigurer.class);
+	private static final Logger LOGGER = LoggerFactory.
+										getLogger(CustomSecurityConfigurer.class);
 	
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
