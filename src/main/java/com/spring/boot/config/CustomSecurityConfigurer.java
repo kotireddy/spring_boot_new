@@ -1,5 +1,8 @@
 package com.spring.boot.config;
 
+import com.spring.boot.handler.CustomAuthenticationSuccessHandler;
+import com.spring.boot.handler.CustomFailureHandler;
+import com.spring.boot.handler.CustomLogoutHandler;
 import com.spring.boot.service.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +25,15 @@ public class CustomSecurityConfigurer extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
+
+	@Autowired
+	private CustomAuthenticationSuccessHandler successHandler;
+
+	@Autowired
+	private CustomFailureHandler failureHandler;
+
+	@Autowired
+	private CustomLogoutHandler logoutSuccessHandler;
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -35,21 +47,18 @@ public class CustomSecurityConfigurer extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		LOGGER.info("<<<<<<< Http Security Configuration >>>>>>>");
 		http.csrf().disable();
-		http
-			.authorizeRequests()
+		http.authorizeRequests()
 			.antMatchers("/","/home").permitAll()
 			.anyRequest().authenticated()
-			.and()
-		.formLogin()
-			.loginPage("/login")
-			.permitAll()
-			.failureUrl("/login?error")
-			.and()
-		.logout()
-			.permitAll()
-			.and()
-		.exceptionHandling()
-			.accessDeniedPage("/403");
+		.and()
+		.formLogin().loginPage("/login").permitAll()
+				.successHandler(successHandler)
+				.failureHandler(failureHandler)
+		.and()
+		.logout().permitAll()
+			.logoutSuccessHandler(logoutSuccessHandler)
+		.and()
+		.exceptionHandling().accessDeniedPage("/403");
 	}
 	
 	private PasswordEncoder getPasswordEncoder() {
